@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper>
-  <!-- 해당 태그는 무조건 삭제!! -->
+<mapper namespace="edu.kh.todo.model.mapper.TodoMapper">
+    <!-- 해당 태그는 무조건 삭제!! -->
 	<!--<cache-ref namespace=""/>-->
 
 </mapper>
