@@ -109,22 +109,79 @@ public class TodoController {
 		return path;
 	}
 	
+	/** 완료 여부 변경
+	 * @param todo : 커맨드 객체
+	 * 		 //@ModelAttribute 와 함께 DTO 클래스를 사용하는 방식
+	 * 		- 파라미터의 키와 Todo 객체의 필드명이 일치하면
+	 * 		- 일치하는 필드값이 파라미터의 value 값으로 세팅된 상태
+	 *		- 즉, todo 객체의 todoNo와 complete 필드가 세팅 완료된 상태
+	 * @return
+	 */
+	@GetMapping("changeComplete")
+	public String changeComplete(/*@ModelAttribute*/ Todo todo,
+								RedirectAttributes ra) {
+		
+		// 변경 서비스 호출
+		int result = service.changeComplete(todo);
+		
+		// 변경 성공 시 "변경 성공"
+		// 변경 실패 시 "변경 실패" 메세지 출력
+		String message = null;
+		
+		if(result > 0) {
+			message = "변경 성공";
+		} else {
+			message = "변경 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		// 상대경로 (현재 위치 중요)
+		// 현재 주소 : /todo/changeComplete
+		// 목표 주소 : /todo/detail?todoNo=1
+		return "redirect:detail?todoNo=" + todo.getTodoNo();
+	}
 	
+	/** 수정 화면 전환 요청
+	 * @return forward
+	 */
+	@GetMapping("update")
+	public String todoUpdate(@RequestParam("todoNo") int todoNo, Model model) {
+		
+		// 상세조회 서비스 재활용 >> 수정화면에 출력할 기존 내용 필요
+		Todo todo = service.todoDetail(todoNo);
+		
+		model.addAttribute("todo", todo);
+		
+		// classpath:/templates/
+		// .html
+		return "todo/update";
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// ex) todoTitle="?"&tocoContent="상세내용"&todoNo=1
+	@PostMapping("update")
+	public String todoUpdate(Todo todo, RedirectAttributes ra) {
+		
+		// 수정 서비스 호출 후 결과 반환받기
+		int result = service.todoUpdate(todo);
+		
+		String path = "redirect:";
+		String message = null;
+		
+		if(result > 0) {
+			// 해당 Todo의 상세 조회로 리다이렉트
+			path += "/todo/detail?todoNo=" + todo.getTodoNo();
+			message = "수정이 되긴 하는구나 ㅇㅅㅇ;;";
+		} else {
+			// 다시 수정 화면으로 리다이렉트
+			path += "/todo/update?todoNo=" + todo.getTodoNo();
+			message = "수정 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return path;
+	}
 	
 	
 	

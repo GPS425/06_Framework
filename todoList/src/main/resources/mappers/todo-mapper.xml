@@ -82,5 +82,31 @@
 		DELETE FROM TB_TODO
 		WHERE TODO_NO = #{todoNo}
 	</delete>
+	
+	<update id="changeComplete" parameterType="Todo">
+		UPDATE TB_TODO SET
+		COMPLETE = #{complete}
+		WHERE TODO_NO = #{todoNo}
+	</update>
+	
+	<update id="todoUpdate" parameterType="Todo">
+		UPDATE TB_TODO SET
+		TODO_TITLE = #{todoTitle},
+		TODO_CONTENT = #{todoContent}
+		WHERE TODO_NO = #{todoNo}
+	</update>
+
+	<select id="getTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM TB_TODO
+	</select>
+
+
+
+
+
+
+
+
+
 
 </mapper>
