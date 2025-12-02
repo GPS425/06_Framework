@@ -1,0 +1,16 @@
+1교시 Servlet/JSP
+
+서블릿 index.jsp >> 메인페이지
+요청 방식 a : GET 방식 href: 주소 값
+@WebServlet("/book/list") >> 요청 주소 맨 앞에 / 반드시 붙이기
+오버라이딩 doGet / doPost 확인 잘 하기
+
+forward, redirect 방식 중요
+제출되는 파라미터의 키 값 항상 봐야함(name 속성값)
+req.getParameter("이 안에 name 속성값과 똑같이 작성");
+
+2교시 스프링
+
+비동기 안 나옵니다
+demoproject1의 ParameterController 내용만 모두 이해하고 있으면 됩니다.
+ex) ModelAttribute, 각종 어노테이션 적재적소에 잘 있는지 확인하기
