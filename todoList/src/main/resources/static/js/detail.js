@@ -44,3 +44,4 @@ updateBtn.addEventListener("click", (e) => {
   const todoNo = e.target.dataset.todoNo;
   location.href = `/todo/update?todoNo=${todoNo}`;
 });
+

@@ -52,16 +52,12 @@ Ajax(Asynchronous JavaScript and XML)는 비동기적으로 서버와 브라우�
             
 
   <table border="1" style="border-collapse: collapse;">
-
     <thead>
       <th>번호</th>
       <th>할 일 제목</th>
       <th>완료 여부</th>
       <th>등록 날짜</th>
     </thead>
-
-
-
 
     <tbody id="tbody">
     </tbody>
@@ -73,7 +69,7 @@ Ajax(Asynchronous JavaScript and XML)는 비동기적으로 서버와 브라우�
     할 일 상세 조회 시 출력되는 화면 
     popup layer : 현재 페이지 위에 새로운 레이어를 띄우는 것
   -->
-                       <!-- 처음에 숨겨놓기 -->
+                    <!-- 처음에 숨겨놓기 -->
   <div id="popupLayer" class="popup-hidden">
 
     <div class="popup-row">
@@ -105,11 +101,6 @@ Ajax(Asynchronous JavaScript and XML)는 비동기적으로 서버와 브라우�
   </div>
 
 
-
-
-
-
-
   <!-- 수정 팝업 레이어 (처음에 숨겨져 있음)-->
   <div id="updateLayer" class="popup-hidden">
     <div class="popup-row">
@@ -127,27 +118,15 @@ Ajax(Asynchronous JavaScript and XML)는 비동기적으로 서버와 브라우�
 
   </div>
 
-
-
-
-
-
-
   <!-- 
     footer.html 조각을 해당 위치에 추가 
     (조각의 경로는 forward 하듯이 작성(접두사,접미사 생략))
   -->
   <th:block th:replace="~{common/footer}"></th:block>
 
-  <!-- static 폴더 기준 -->
+  
   <script src="/js/ajax-main.js"></script>
   
 
 </body>
 </html>
-
-
-
-
-
-
