@@ -2,13 +2,23 @@ package edu.kh.project.member.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.member.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 
+/* @SessionAttributes({"key", "key", "key",...})
+ * - Model에 추가된 속성 중
+ *   key 값이 일치하는 속성을 session scope로 변경
+ * 	 
+ * 
+ */
+@SessionAttributes({"loginMember"})	// 60번줄 2단계 작성내용
 @RequestMapping("member")
 @Controller
 @Slf4j
@@ -31,7 +41,7 @@ public class MemberController {
 	 */
 	
 	@PostMapping("login")	// /member/login 요청 POST 방식 매핑
-	public String login(Member inputMember) {	// @ModelAttribute 생략
+	public String login(Member inputMember, RedirectAttributes ra, Model model) {	// @ModelAttribute 생략
 		
 		// 로그인 서비스 호출
 		try {
@@ -39,12 +49,25 @@ public class MemberController {
 			
 			log.debug("loginMember : " + loginMember);
 			
+			// 로그인 실패 시
+			if(loginMember == null) {
+				ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다 ㅉㅉ");
+			} else {
+				// 로그인 성공 시
+				model.addAttribute("loginMember", loginMember);
+				// 1단계 : request scope에 세팅됨
+				
+				// 2단계 : 클래스 위에 @SessionAttributes()
+				// 어노테이션 작성하여 session scope 이동
+				
+			}
+			
 			
 		} catch (Exception e) {
 			log.info("이 새낀 로그인 구현도 못하는 비응신이네 ㅋㅋ");
 			e.printStackTrace();
 		}
 		
-		return "";
+		return "redirect:/";	// 메인 페이지 재요청
 	}
 }
