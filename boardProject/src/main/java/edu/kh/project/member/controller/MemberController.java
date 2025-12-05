@@ -3,13 +3,18 @@ package edu.kh.project.member.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.member.model.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /* @SessionAttributes({"key", "key", "key",...})
@@ -39,9 +44,8 @@ public class MemberController {
 	 * 						memberEmail, memberPw 세팅된 상태
 	 * @return 
 	 */
-	
 	@PostMapping("login")	// /member/login 요청 POST 방식 매핑
-	public String login(Member inputMember, RedirectAttributes ra, Model model) {	// @ModelAttribute 생략
+	public String login(Member inputMember, RedirectAttributes ra, Model model, @RequestParam(value="saveId", required = false) String saveId, HttpServletResponse resp) {	// @ModelAttribute 생략
 		
 		// 로그인 서비스 호출
 		try {
@@ -60,6 +64,30 @@ public class MemberController {
 				// 2단계 : 클래스 위에 @SessionAttributes()
 				// 어노테이션 작성하여 session scope 이동
 				
+				// ******** Cookie *********
+				// 이메일 저장
+				
+				// 쿠키 객체 생성(K:V)
+				Cookie cookie = new Cookie("saveId", loginMember.getMemberEmail());
+				// saveId = user01@kh.or.kr
+				
+				// 쿠키가 적용될 경로 설정
+				// -> 클라이언트가 어떤 요청을 할 때 쿠키가 첨부될 지 지정
+				cookie.setPath("/");
+				// "/" >> IP 또는 도메인 또는 localhost
+				// 	>> 메인페이지 + 그 하위 주소 모두 경로가 된다.
+				
+				// 쿠키의 만료 기간 지정
+				if(saveId != null) {	// 아이디 저장 체크 시
+					cookie.setMaxAge(60 * 60 * 24 * 30); // 30일 초단위로 지정
+				} else {	// 미체크 시
+					cookie.setMaxAge(0);	// 0초(클라이언트의 쿠키 삭제)
+				}
+				
+				// 응답객체에 쿠키 추가 >> 클라이언트 전달
+				resp.addCookie(cookie);
+				
+				
 			}
 			
 			
@@ -69,5 +97,19 @@ public class MemberController {
 		}
 		
 		return "redirect:/";	// 메인 페이지 재요청
+	}
+	
+	
+	
+	/** 로그아웃 : session에 저장된 로그인된 회원 정보를 없앰
+	 * @param SessionStatus : @SessionAttributes로 지정된 특정 속성을
+	 * 						  세션에서 제거할 수 있는 기능을 제공하는 객체
+	 * @return 
+	 */
+	@GetMapping("logout")	// /member/logout 요청 GET 방식 매핑
+	public String logout(SessionStatus status) {
+		status.setComplete();	// 세션을 완료 시킴
+		
+		return "redirect:/";
 	}
 }

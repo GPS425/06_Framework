@@ -91,7 +91,7 @@
                 
                 <div>
                   <a href="#" id="nickname" th:text="*{memberNickname}">닉네임</a>
-                  <a href="#" id="logoutBtn">로그아웃</a>
+                  <a href="/member/logout" id="logoutBtn">로그아웃</a>
                 </div>
 
                 <p th:text="*{memberEmail}">이메일</p>
@@ -110,5 +110,6 @@
   <th:block th:replace="~{common/footer}"></th:block>
 
   <!-- script 추가-->
+  <script src="/js/main.js"></script>
 </body>
 </html>
