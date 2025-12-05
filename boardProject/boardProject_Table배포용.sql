@@ -52,6 +52,12 @@ VALUES(SEQ_MEMBER_NO.NEXTVAL,
 
 COMMIT;
 
+SELECT * FROM MEMBER;
+
+-- 회원 1번 유저일 암호화된 비밀번호 업데이트(pass01!)
+UPDATE "MEMBER" SET
+MEMBER_PW = '$2a$10$nfGb86TM/w47uc3ZAQZ0jef5ZD2OvBx/3/8zkgJLnwecrtZHz2ucu'
+WHERE MEMBER_NO = 1;
 -----------------------------------------
 
 /* 이메일, 인증키 저장 테이블 생성 */
