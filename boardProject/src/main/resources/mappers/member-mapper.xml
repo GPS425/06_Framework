@@ -24,5 +24,12 @@
 		WHERE MEMBER_DEL_FL = 'N'
 		AND MEMBER_EMAIL = #{memberEmail}
 	 </select>
+	 
+	 <select id="checkNickname">
+	 SELECT COUNT(*)
+	 FROM MEMBER
+	 WHERE MEMBER_DEL_FL = 'N'
+	 AND MEMBER_NICKNAME = #{memberNickname}
+	 </select>
 	
 </mapper>

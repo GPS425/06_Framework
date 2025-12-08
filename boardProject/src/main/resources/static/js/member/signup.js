@@ -145,9 +145,24 @@ sendAuthKeyBtn.addEventListener("click", () => {
     clearInterval(authTimer);
 
     // *************************************
-    // 비동기로 서버에서 메일보내기 
+    // 비동기로 서버에서 메일보내기 (ajax)
+		fetch("/email/signup", {
+			method: "POST",
+			headers: {"Content-Type" : "application/json"},
+			body: memberEmail.value
+		})
+		.then(resp => resp.text())
+		.then(result => {
+			if(result == 1) {
+				// 인증번호 발송 성공
+				console.log("인증번호 발송 성공");
+			} else {
+				// 인증번호 발송 실패
+				console.log("인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+			}
+		});
     
-   
+  
 
     // *************************************
 
@@ -227,7 +242,27 @@ checkAuthKeyBtn.addEventListener("click", () => {
     };
 
 	// 인증번호 확인용 비동기 요청(ajax) 보내기
-    
+  // "email/checkAuthKey", POST 요청
+	fetch("/email/checkAuthKey", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj)
+  })
+    .then(resp => resp.text())
+    .then(result => {
+      if (result == 0) {
+				// 일치하지 않을 때
+        alert("인증번호가 일치하지 않습니다!");
+        checkObj.authKey = false;
+        return;
+      }
+      // 일치할 때
+      authKeyMessage.innerText = "인증 되었습니다.";
+      authKeyMessage.classList.remove("error");
+      authKeyMessage.classList.add("confirm");
+      checkObj.authKey = true; // 인증번호 검사 여부 true 변경
+			clearInterval(authTimer); // 타이머 멈춤
+		});
 
 });
 
@@ -348,7 +383,23 @@ memberNickname.addEventListener("input", (e) => {
     }
 
     // 3) 중복 검사 ajax요청 (유효한 경우)
-   
+  fetch ("/member/checkNickname?memberNickname=" + inputNickname)
+	.then(resp => resp.text())
+	.then( count => {
+		if(count == 1) { // 중복인 경우
+			nickMessage.innerText = "이미 사용중인 닉네임입니다.";
+			nickMessage.classList.add("error");
+			nickMessage.classList.remove("confirm");
+			checkObj.memberNickname = false;
+			return;
+		}
+
+		// 중복이 아닌 경우
+		nickMessage.innerText = "사용 가능한 닉네임입니다.";
+		nickMessage.classList.add("confirm");
+		nickMessage.classList.remove("error");
+		checkObj.memberNickname = true;
+	});
 });
 
 // --------------------------------------

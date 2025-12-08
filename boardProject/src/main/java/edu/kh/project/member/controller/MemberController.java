@@ -131,6 +131,12 @@ public class MemberController {
 		return service.checkEmail(memberEmail);
 	}
 	
+	@ResponseBody
+	@GetMapping("checkNickname")
+	public int checkNickname(@RequestParam("memberNickname") String memberNickname) {
+		return service.checkNickname(memberNickname);
+	}
+	
 	
 	
 	
