@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -112,4 +113,37 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+	
+	/** 회원 가입 페이지로 이동
+	 * @return signup 페이지
+	 */
+	@GetMapping("signup")
+	public String signupPage() {
+		return "member/signup";
+	}
+	
+	/** 이메일 중복검사(비동기 요청)
+	 * @return
+	 */
+	@ResponseBody	// 응답 본문으로 응답값을 돌려보냄
+	@GetMapping("checkEmail")	// Get 방식 /member/checkEmail 요청 매핑
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		return service.checkEmail(memberEmail);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
