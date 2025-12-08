@@ -9,11 +9,11 @@
 // - false == 해당 항목은 유효하지 않은 형식으로 작성됨
 const checkObj = {
     "memberEmail"     : false,
+		"authKey"         : false,
     "memberPw"        : false,
     "memberPwConfirm" : false,
     "memberNickname"  : false,
-    "memberTel"       : false,
-    "authKey"         : false
+    "memberTel"       : false
 };
 
 // ---------------------------------
