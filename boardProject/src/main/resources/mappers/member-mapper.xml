@@ -31,5 +31,21 @@
 	 WHERE MEMBER_DEL_FL = 'N'
 	 AND MEMBER_NICKNAME = #{memberNickname}
 	 </select>
+	 
+	 <!-- 회원 가입 -->
+	<!-- DML은 resultType 아예 못 쓰게 막아둠 >> 행의 갯수를 반환하기 때문 -->
+	<insert id="signup">
+		INSERT INTO "MEMBER"
+		VALUES(SEQ_MEMBER_NO.NEXTVAL,
+		#{memberEmail},
+		#{memberPw},
+		#{memberNickname},
+		#{memberTel},
+		#{memberAddress},
+		NULL,
+		DEFAULT,
+		DEFAULT,
+		DEFAULT)
+	</insert>
 	
 </mapper>

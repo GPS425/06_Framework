@@ -24,5 +24,11 @@ public interface MemberMapper {
 	 * @return 
 	 */
 	int checkNickname(String memberNickname);
+
+	/** 회원가입 SQL 실행
+	 * @param inputMember
+	 * @return
+	 */
+	int signup(Member inputMember);
 	
 }
