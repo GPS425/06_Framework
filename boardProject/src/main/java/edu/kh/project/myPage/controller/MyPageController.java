@@ -143,42 +143,71 @@ public class MyPageController {
 
 	@PostMapping("changePw") // HTML form 태그의 action="changePw" method="POST" 요청을 받음
 	public String changePw(
-	        // 1. [데이터 수집] HTML 화면에서 입력한 값 2개 가져오기 (name 속성값과 일치해야 함)
-	        @RequestParam("currentPw") String currentPw, // 입력한 현재 비밀번호
-	        @RequestParam("newPw") String newPw,         // 입력한 새 비밀번호
-	        
-	        // 2. [로그인 정보] 세션에 저장된 로그인한 회원의 정보를 통째로 가져옴 (누구인지 알아야 하니까)
-	        // - "loginMember"라는 키값으로 세션에 저장된 객체를 loginMember 변수에 대입
-	        @SessionAttribute("loginMember") Member loginMember, 
-	        
-	        // 3. [메세지 전달용] 리다이렉트 시 데이터를 잠깐 전달할 객체 (Model은 리다이렉트하면 데이터 날아감)
-	        RedirectAttributes ra 
-	        ) {
-	    
-	    // 4. [회원 번호 추출] 로그인한 정보에서 PK(번호)만 쏙 뽑음 (Service에 넘겨주려고)
-	    int memberNo = loginMember.getMemberNo();
+			// 1. [데이터 수집] HTML 화면에서 입력한 값 2개 가져오기 (name 속성값과 일치해야 함)
+			@RequestParam("currentPw") String currentPw, // 입력한 현재 비밀번호
+			@RequestParam("newPw") String newPw, // 입력한 새 비밀번호
 
-	    // 5. [서비스 호출] 실무자(Service)한테 "이 사람 비번 좀 바꿔줘" 하고 데이터 던짐
-	    // - result : 성공하면 1, 실패(현재 비번 틀림)하면 0이 돌아옴
-	    int result = service.changePw(currentPw, newPw, memberNo);
+			// 2. [로그인 정보] 세션에 저장된 로그인한 회원의 정보를 통째로 가져옴 (누구인지 알아야 하니까)
+			// - "loginMember"라는 키값으로 세션에 저장된 객체를 loginMember 변수에 대입
+			@SessionAttribute("loginMember") Member loginMember,
 
-	    String path = null;    // 이동할 주소 저장할 변수
-	    String message = null; // 알림 메세지 저장할 변수
+			// 3. [메세지 전달용] 리다이렉트 시 데이터를 잠깐 전달할 객체 (Model은 리다이렉트하면 데이터 날아감)
+			RedirectAttributes ra) {
 
-	    // 6. [결과 처리] 서비스가 준 결과(0 또는 1)에 따라 분기 처리
-	    if (result > 0) { // 변경 성공 (1)
-	        message = "비밀번호가 변경 되었습니다";
-	        path = "redirect:info"; // 내 정보 페이지(/myPage/info)로 강제 이동
+		// 4. [회원 번호 추출] 로그인한 정보에서 PK(번호)만 쏙 뽑음 (Service에 넘겨주려고)
+		int memberNo = loginMember.getMemberNo();
 
-	    } else { // 변경 실패 (0) - 주로 현재 비밀번호가 틀렸을 때
-	        message = "현재 비밀번호가 일치하지 않습니다";
-	        path = "redirect:changePw"; // 다시 비번 변경 페이지(/myPage/changePw)로 강제 이동(빠꾸)
-	    }
+		// 5. [서비스 호출] 실무자(Service)한테 "이 사람 비번 좀 바꿔줘" 하고 데이터 던짐
+		// - result : 성공하면 1, 실패(현재 비번 틀림)하면 0이 돌아옴
+		int result = service.changePw(currentPw, newPw, memberNo);
 
-	    // 7. [메세지 저장] 리다이렉트 된 페이지에서 딱 한 번만 쓸 수 있는 메세지 세팅
-	    // - 그냥 Model에 담으면 redirect 하는 순간 데이터가 증발함
-	    ra.addFlashAttribute("message", message);
+		String path = null; // 이동할 주소 저장할 변수
+		String message = null; // 알림 메세지 저장할 변수
 
-	    return path; // 설정한 주소로 이동시킴
+		// 6. [결과 처리] 서비스가 준 결과(0 또는 1)에 따라 분기 처리
+		if (result > 0) { // 변경 성공 (1)
+			message = "비밀번호가 변경 되었습니다";
+			path = "redirect:info"; // 내 정보 페이지(/myPage/info)로 강제 이동
+
+		} else { // 변경 실패 (0) - 주로 현재 비밀번호가 틀렸을 때
+			message = "현재 비밀번호가 일치하지 않습니다";
+			path = "redirect:changePw"; // 다시 비번 변경 페이지(/myPage/changePw)로 강제 이동(빠꾸)
+		}
+
+		// 7. [메세지 저장] 리다이렉트 된 페이지에서 딱 한 번만 쓸 수 있는 메세지 세팅
+		// - 그냥 Model에 담으면 redirect 하는 순간 데이터가 증발함
+		ra.addFlashAttribute("message", message);
+
+		return path; // 설정한 주소로 이동시킴
+
+		/*
+		 * . 닉네임 변경 (동기화 필수) 상황: 닉네임 바꾸고 메인화면 딱 갔어.
+		 * 
+		 * 문제: 보통 사이트 헤더(맨 위)에 "반갑습니다, [닉네임]님" 이렇게 뜨잖아? 이거 세션(loginMember)에서 꺼내서 보여주는
+		 * 거거든.
+		 * 
+		 * 안 바꿨을 때: DB는 '전제우스'로 바꼈는데, 세션은 아직 '전재민'이라서 화면에 옛날 이름이 뜸. → "어? 안 바꼈네?" 하고
+		 * 사용자가 당황함. (버그처럼 보임)
+		 * 
+		 * 결론: 그래서 loginMember.setMemberNickname(...) 해서 화면에 보이는 것도 억지로 바꿔주는 거임.
+		 * 
+		 * 2. 비밀번호 변경 (동기화 굳이 안 함) 상황: 비번 바꾸고 메인화면 갔어.
+		 * 
+		 * 차이점: 화면 어디에도 "현재 비밀번호: [암호문]" 이렇게 보여주는 곳이 없음.
+		 * 
+		 * 안 바꿨을 때: 세션(loginMember) 안에 있는 비밀번호가 옛날 거든 새 거든, 어차피 눈에 안 보임.
+		 * 
+		 * 기능상 문제: 나중에 비번 또 바꿀 때도, Service에서 **DB를 직접 조회(mapper.selectPw)**해서 확인하지, 세션에
+		 * 있는 비번을 쓰진 않음.
+		 * 
+		 * 결론: 기능 고장도 안 나고, 화면에 티도 안 나니까 귀찮게 세션까지 갱신 안 하고 그냥 냅두는 거임.
+		 * 
+		 * 3줄 요약 닉네임/전화번호: 화면에 바로 보이니까 세션도 바꿔줘야 함 (안 그러면 안 바뀐 것처럼 보임).
+		 * 
+		 * 비밀번호: 어차피 눈에 안 보이고, 다음 로직에도 지장 없어서 세션 갱신 생략함.
+		 * 
+		 * 니 코드에서 빠진 게 아니라, 원래 비번 변경은 쿨하게 패스하는 경우가 많음. 안심해라.
+		 * 
+		 */
 	}
 }
