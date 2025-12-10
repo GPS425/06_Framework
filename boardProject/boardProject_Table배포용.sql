@@ -58,6 +58,10 @@ SELECT * FROM MEMBER;
 UPDATE "MEMBER" SET
 MEMBER_PW = '$2a$10$nfGb86TM/w47uc3ZAQZ0jef5ZD2OvBx/3/8zkgJLnwecrtZHz2ucu'
 WHERE MEMBER_NO = 1;
+
+UPDATE "MEMBER" SET
+MEMBER_DEL_FL = 'N'
+WHERE MEMBER_NO = 2;
 -----------------------------------------
 
 /* 이메일, 인증키 저장 테이블 생성 */

@@ -23,6 +23,12 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
+	<update id="secession">
+		UPDATE "MEMBER" SET
+		MEMBER_DEL_FL = 'Y'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
 	
 	
 </mapper>

@@ -37,18 +37,18 @@
 
 
           * application/x-www-form-urlencoded (기본값)
-           - URL 인코딩된 "문자열" 로 서버에 제출
+          - URL 인코딩된 "문자열" 로 서버에 제출
 
 
           * multipart/form-data  (무조건 POST에서만 동작)
 
-           - 제출되는 여러 데이터 타입에 맞춰서 인코딩하여 제출
+          - 제출되는 여러 데이터 타입에 맞춰서 인코딩하여 제출
             문자열 -> String
             숫자   -> String -> int/double(Spring이 처리)
             파일   -> 2진 데이터
 
           * text/plain
-           - 텍스트로 서버에 제출
+          - 텍스트로 서버에 제출
 
 
         </pre>
@@ -63,7 +63,7 @@
               -> @RequestParam으로 처리 가능
           -->
           <input type="file" name="uploadFile">
-         
+        
 
           <button class="myPage-submit">제출하기</button>
         </form>
@@ -102,7 +102,7 @@
 
           <pre>
             1) 같은 name 속성을 가지는 type="file"
-               요소를 여러 개 작성
+              요소를 여러 개 작성
 
             2) multiple 속성 이용
           </pre>
@@ -132,9 +132,9 @@
 
   </main>
 
-   <!-- 푸터 추가 -->
-   <th:block th:replace="~{common/footer}"></th:block>
+  <!-- 푸터 추가 -->
+  <th:block th:replace="~{common/footer}"></th:block>
   
-   <script src="/js/myPage/myPage.js"></script>
+  <script src="/js/myPage/myPage.js"></script>
 </body>
 </html>
