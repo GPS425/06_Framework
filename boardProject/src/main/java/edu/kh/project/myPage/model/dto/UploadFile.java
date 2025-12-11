@@ -1,0 +1,19 @@
+package edu.kh.project.myPage.model.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class UploadFile {
+	private int fileNo;
+	private String filePath;
+	private String fileOriginalName;
+	private String fileRename;
+	private String fileUploadDate;
+	private int memberNo;
+}

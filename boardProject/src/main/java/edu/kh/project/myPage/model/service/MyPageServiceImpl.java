@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.project.common.util.Utility;
 import edu.kh.project.member.model.dto.Member;
+import edu.kh.project.myPage.model.dto.UploadFile;
 import edu.kh.project.myPage.model.mapper.MyPageMapper;
 
 @Service
@@ -90,6 +92,7 @@ public class MyPageServiceImpl implements MyPageService{
 		return mapper.secession(memberNo);
 	}
 
+	// 파일 업로드 테스트 1
 	@Override
 	public String fileUpload1(MultipartFile uploadFile) throws Exception {
 		
@@ -113,5 +116,55 @@ public class MyPageServiceImpl implements MyPageService{
 		
 		return "/myPage/file/" + uploadFile.getOriginalFilename();
 		
+	}
+
+	// 파일 업로드 테스트 2 (서버 저장, DB 저장)
+	@Override
+	public int fileUpload2(MultipartFile uploadFile, int memberNo) throws Exception{
+		
+		// 업로드된 파일이 없다면
+		if(uploadFile.isEmpty()) {
+			return 0;
+		}
+		
+		
+		// MultipartFile이 제공하는 메서드
+		// - isEmpty() : 업로드된 파일이 없을 경우 True, 있을 경우 False 반환
+		// - getSize() : 파일 크기 반환(Byte)
+		// - getOriginalFileName() : 원본 파일명 반환
+		// - transferTo(경로) : 메모리 또는 임시저장 경로에 업로드된 파일을 원하는 경로에 실제 전송
+		//						(서버의 어떤 폴더에 저장을 할 지 지정할 수 있음)
+		
+		
+		// 업로드된 파일이 있다면
+		// 1. 서버에 저장될 서버 폴더 경로 만들기
+		// 파일이 저장될 서버 폴더 경로
+		String folderPath = "C:/uploadFiles/test/";
+		
+		// 클라이언트가 파일이 저장된 폴더에 접근할 수 있는 주소(요청 주소)
+		String webPath = "/myPage/file/";
+		
+		// 2. DB에 전달할 데이터를 DTO로 묶어서 INSERT
+		// webPath, memberNo, 원본파일명, 변경된파일명
+		String fileRename = Utility.fileRename(uploadFile.getOriginalFilename());
+
+		// Builder 패턴을 이용해서 UploadFile 객체 생성해보기
+		// 장점 1) 반복되는 참조변수명, set 구문 생략
+		// 장점 2) method chaining을 이용하여 한 줄로 작성 가능
+		UploadFile uf = UploadFile.builder().memberNo(memberNo).filePath(webPath)
+				.fileOriginalName(uploadFile.getOriginalFilename()).fileRename(fileRename)
+				.build();
+		
+		int result = mapper.insertUploadFile(uf);
+		
+		// 3. 삽입(INSERT) 성공 시 파일을 지정된 서버 폴더에 저장
+		if(result == 0) return 0;	// 삽입 실패 시
+		
+		// 삽입 성공 시
+		// C:/uploadFiles/test/변경된파일명 으로 파일을 서버컴퓨터에 저장
+		uploadFile.transferTo(new File(folderPath + fileRename));
+		// C:/uploadFiles/test/20251211100330_00001.jpg
+		
+		return result;
 	}
 }

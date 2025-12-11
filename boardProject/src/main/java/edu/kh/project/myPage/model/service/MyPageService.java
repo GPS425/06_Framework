@@ -34,4 +34,11 @@ public interface MyPageService {
 	 */
 	String fileUpload1(MultipartFile uploadFile) throws Exception;
 
+	/** 파일 업로드 테스트 2
+	 * @param uploadFile
+	 * @param memberNo
+	 * @return
+	 */
+	int fileUpload2(MultipartFile uploadFile, int memberNo) throws Exception;
+
 }

@@ -29,6 +29,16 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
+	<insert id="insertUploadFile">
+		INSERT INTO "UPLOAD_FILE"
+		VALUES(SEQ_FILE_NO.NEXTVAL,
+				#{filePath},
+				#{fileOriginalName},
+				#{fileRename},
+				DEFAULT,
+				#{memberNo})
+	</insert>
+	
 	
 	
 </mapper>
