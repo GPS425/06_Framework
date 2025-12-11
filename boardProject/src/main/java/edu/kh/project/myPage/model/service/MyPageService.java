@@ -1,8 +1,11 @@
 package edu.kh.project.myPage.model.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.project.member.model.dto.Member;
+import edu.kh.project.myPage.model.dto.UploadFile;
 
 public interface MyPageService {
 
@@ -40,5 +43,26 @@ public interface MyPageService {
 	 * @return
 	 */
 	int fileUpload2(MultipartFile uploadFile, int memberNo) throws Exception;
+
+	/** 파일 목록 조회 서비스
+	 * @param memberNo
+	 * @return
+	 */
+	List<UploadFile> fileList(int memberNo);
+
+	/** 여러 파일 업로드 서비스
+	 * @param aaaList
+	 * @param bbbList
+	 * @param memberNo
+	 * @return
+	 */
+	int fileUpload3(List<MultipartFile> aaaList, List<MultipartFile> bbbList, int memberNo) throws Exception;
+
+	/** 프로필 이미지 변경 서비스
+	 * @param profileImg
+	 * @param loginMember
+	 * @return
+	 */
+	int profile(MultipartFile profileImg, Member loginMember) throws Exception;
 
 }
