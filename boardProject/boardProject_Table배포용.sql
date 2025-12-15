@@ -180,6 +180,7 @@ INSERT INTO "BOARD_TYPE" VALUES(SEQ_BOARD_CODE.NEXTVAL, '공지 게시판');
 INSERT INTO "BOARD_TYPE" VALUES(SEQ_BOARD_CODE.NEXTVAL, '정보 게시판');
 INSERT INTO "BOARD_TYPE" VALUES(SEQ_BOARD_CODE.NEXTVAL, '자유 게시판');
 
+SELECT * FROM BOARD_TYPE;
 
 COMMIT;
 --------------------------------------------------------------------20251212 수행 완료
@@ -273,6 +274,7 @@ ALTER TABLE "BOARD_IMG" ADD CONSTRAINT "PK_BOARD_IMG" PRIMARY KEY (
 ALTER TABLE "COMMENT" ADD CONSTRAINT "PK_COMMENT" PRIMARY KEY (
 	"COMMENT_NO"
 );
+-----------------------------------------------------------------여기까지 모두 수행함(2025-12-15)
 
 -------------------- FK -------------------------
 
