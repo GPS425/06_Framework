@@ -48,4 +48,16 @@ public interface BoardMapper {
 	 */
 	Board selectOne(Map<String, Integer> map);
 
+	/** 조회수 1 증가 SQL 수행
+	 * @param boardNo
+	 * @return
+	 */
+	int updateReadCount(int boardNo);
+
+	/** 조회 수 조회 SQL 수행
+	 * @param boardNo
+	 * @return
+	 */
+	int selectReadCount(int boardNo);
+
 }
