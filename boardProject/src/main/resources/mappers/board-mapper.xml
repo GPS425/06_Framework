@@ -245,4 +245,23 @@
 		WHERE BOARD_NO = #{boardNo}
 	</select>
 	
+	<!-- 좋아요 해제 SQL(DELETE) -->
+	<delete id="deleteBoardLike">
+		DELETE FROM "BOARD_LIKE"
+		WHERE MEMBER_NO = #{memberNo}
+		AND BOARD_NO = #{boardNo}
+	</delete>
+	
+	<!-- 좋아요 체크 SQL(INSERT) -->
+	<insert id="insertBoardLike">
+		INSERT INTO "BOARD_LIKE"
+		VALUES(#{memberNo}, #{boardNo}) 
+	</insert>
+	
+	<!-- 좋아요 개수 조회 SQL -->
+	<select id="selectLikeCount">
+		SELECT COUNT(*) FROM "BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
 </mapper>

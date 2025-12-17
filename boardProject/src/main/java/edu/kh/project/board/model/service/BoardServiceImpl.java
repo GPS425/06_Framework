@@ -133,4 +133,27 @@ public class BoardServiceImpl implements BoardService{
 		// 업데이트 실패한 경우 -1 반환
 		return -1;
 	}
+
+	@Override
+	public int boardLike(Map<String, Integer> map) {
+		
+		int result = 0;
+		// 1. 좋아요가 체크된 상태인 경우(likeCheck == 1)
+		// > BOARD_LIKE 테이블에 DELETE
+		if(map.get("likeCheck") == 1) {
+			result = mapper.deleteBoardLike(map);
+		} else {
+		
+			// 2. 좋아요가 체크되어지지 않은 상태인 경우(likeCheck == 0)
+			// > BOARD_LIKE 테이블에 INSERT
+			result = mapper.insertBoardLike(map);
+		}	
+		
+		// 3. INSERT/DELETE 성공했다면 해당 게시글의 좋아요 갯수 조회 후 반환
+		if(result > 0) {
+			return mapper.selectLikeCount(map.get("boardNo"));
+		} 
+		
+		return -1;
+	}
 }
