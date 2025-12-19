@@ -192,6 +192,89 @@ public class EditBoardController {
 		return "redirect:" + path;
 	}
 	
+	/** 게시글 삭제(GET 방식)
+	 * @param boardCode
+	 * @param boardNo
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
+	public String boardDelete(
+			@PathVariable("boardCode") int boardCode,
+			@PathVariable("boardNo") int boardNo,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra
+			) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardNo", boardNo);
+		map.put("memberNo", loginMember.getMemberNo());
+		
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			message = "삭제되었습니다";
+			// 삭제 성공 시 : 해당 게시판 목록 1페이지로 이동
+			path = "redirect:/board/" + boardCode; 
+			
+		} else {
+			message = "삭제 실패";
+			// 삭제 실패 시 : 게시글 상세 페이지로 이동
+			path = String.format("redirect:/board/%d/%d", boardCode, boardNo);
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return path;
+	}
+	
+	/** 게시글 삭제 (POST 방식)
+	 * @param boardCode
+	 * @param boardNo
+	 * @param cp : 현재 페이지 번호 (목록으로 돌아갈 때 필요)
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
+	public String boardDeletePost(
+			@PathVariable("boardCode") int boardCode,
+			@PathVariable("boardNo") int boardNo,
+			@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra
+			) {
+		
+		// 1. 파라미터 세팅
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardNo", boardNo);
+		map.put("memberNo", loginMember.getMemberNo());
+		
+		// 2. 서비스 호출 (GET 방식이랑 똑같은 거 씀)
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			message = "삭제되었습니다";
+			// 성공 시: 목록으로 이동하되, 보던 페이지(cp) 유지
+			path = String.format("redirect:/board/%d?cp=%d", boardCode, cp);
+			
+		} else {
+			message = "삭제 실패";
+			// 실패 시: 상세 조회 페이지로 이동 (cp 유지)
+			path = String.format("redirect:/board/%d/%d?cp=%d", boardCode, boardNo, cp);
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return path;
+	}
+	
 	
 	
 	

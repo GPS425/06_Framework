@@ -207,4 +207,10 @@ public class EditBoardServiceImpl implements EditBoardService{
 		return result;
 	}
 
+	@Override
+	public int boardDelete(Map<String, Integer> map) {
+		
+		return mapper.boardDelete(map);
+	}
+
 }
