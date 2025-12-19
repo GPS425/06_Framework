@@ -94,7 +94,7 @@
             
             <!-- 수정 성공 시 주소(쿼리스트링) 유지용도 -->
             <input type="hidden" name="cp" th:value="${param.cp}">
-       
+    
         </form>
 
     </main>
@@ -110,7 +110,7 @@
         const imageList = /*[[${board.imageList}]]*/ [];
         const previewList = document.querySelectorAll('img.preview');
 		const orderList = [];  // 기존에 존재하던 이미지의 순서(order)를 기록할 배열
-      
+    
 		for(let img of imageList){
             previewList[img.imgOrder].src = img.imgPath + img.imgRename;
 
