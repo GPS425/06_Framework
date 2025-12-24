@@ -566,6 +566,12 @@ END;
 SELECT NEXT_IMG_NO() FROM DUAL;
 
 
+SELECT SUBSTR(PROFILE_IMG, INSTR(PROFILE_IMG, '/', -1) + 1) "rename"
+FROM "MEMBER"
+UNION
+SELECT CAST(IMG_RENAME AS VARCHAR2(300)) "rename"
+FROM "BOARD_IMG";
+
 ----------------------------------------------------------
 /* 채팅 */
 CREATE TABLE "CHATTING_ROOM" (
