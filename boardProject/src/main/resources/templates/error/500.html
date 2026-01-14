@@ -162,8 +162,12 @@
                 <label for="detailOff">닫기</label>
                 <input type="radio" name="detail-toggle" id="detailOff" class="detailCheck">
                 
-                <div class="detail-content">
+                <div class="detail-content" th:if="${e != null}">
                     <p th:each="t : ${e.getStackTrace()}" th:text="${t}"></p>
+                </div>
+
+                <div class="detail-content" th:unless="${e != null}">
+                    <p>상세 로그 정보가 없습니다.</p>
                 </div>
             </div>
             

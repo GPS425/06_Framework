@@ -29,7 +29,7 @@ public class FilterConfig {
 		filter.setUrlPatterns(Arrays.asList(filteringURL));
 		
 		// 필터 이름 지정
-		filter.setName("loginFIlter");
+		filter.setName("loginFilter");
 		
 		// 필터 순서 지정
 		filter.setOrder(1);
